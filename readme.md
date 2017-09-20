@@ -20,15 +20,15 @@ Diese Bibliothek beinhaltet zwei Module zur Einbindung von Kalenderdateien/-feed
 
 Mit dem Modul **iCal Calendar Reader** werden Kalenderdaten eingelesen (getestet mit Google Calendar, ownCloud Calendar und Synology Calendar), das Modul **iCal Calendar Notifier** reagiert mit einstellbaren Vor- und Nachlaufzeiten mit einer Statusvariable auf Kalenderereignisse. Zum aktuellen Status kann ein Skript weitere Kalenderdaten des/der auslösende(n) Ereigniss(e) abfragen. Es sind beliebig viele **iCal Calendar Notifier**-Instanzen mit unterschiedlichen Einstellungen an eine **iCal Calendar Reader**-Instanz koppelbar. 
 
-Damit ist es z.B. sehr einfach möglich einen zentralen Anwesenheitskalender im Internet zu pflegen, IP Symcon steuert damit automatisch Heizung, Alarmanlage und Anwesenheitssimulation. Mit der Auswertung von zusätzlichen Informationen im Kalendereintrag können z.B. bestimmte Transponder für den Zugang gesperrt bzw. freigeschaltet werden.
+Damit ist es z.B. sehr einfach möglich einen zentralen Anwesenheitskalender im Internet zu pflegen, IP Symcon steuert damit automatisch Heizung, Alarmanlage und Anwesenheitssimulation. Mit der Auswertung von zusätzlichen Informationen im Kalendereintrag durch ein Skript können z.B. bestimmte Transponder für den Zugang gesperrt bzw. freigeschaltet werden.
 
-Auch die Visualisierung von Einträgen in öffentlichen Kalendern (z.B. Müllabfuhrtermine, Kinoprogramm, ...) im Webfront können mit mehreren **iCal Calendar Notifier**-Instanzen ohne viel Skript-Programmierung gesteuert werden. Z.B. werden Abfuhrtermine immer bereits 1 Tag vorher angezeigt, das Kinoprogramm zeigt prominent den Spielplan des aktuellen Tages, weiter unten die restliche Woche.
+Auch die Visualisierung von Einträgen in öffentlichen Kalendern (z.B. Müllabfuhrtermine, Kinoprogramm, ...) im Webfront können mit mehreren **iCal Calendar Notifier**-Instanzen ohne viel Skript-Programmierung gesteuert werden. Z.B. können Abfuhrtermine immer bereits 1 Tag vorher angezeigt werden, das Kinoprogramm zeigt prominent den Spielplan des aktuellen Tages, weiter unten folgt die restliche Woche.
 
 Kalender werden beim Laden unter Berücksichtigung ihrer jeweiligen Zeitzone in die lokale Zeitzone umgerechnet, sich wiederholende Termine als mehrere Einzeltermine abgespeichert.
 
 Diese Bibliothek nutzt folgende externe Bibliotheken im Verzeichnis `/lib`:
-* iCalcreator (Version 2.24) `https://github.com/iCalcreator/iCalcreator`
-* RRULE for PHP (Stand 2017-05-15) `https://github.com/rlanvin/php-rrule`
+* iCalcreator (Version 2.24) `https://github.com/iCalcreator/iCalcreator`, AGPLv3-Lizenz
+* RRULE for PHP (Stand 2017-05-15) `https://github.com/rlanvin/php-rrule`, MIT-Lizenz
 
 
 ### 2. Voraussetzungen
@@ -72,11 +72,13 @@ Lagged Notification |
 Prenotify (mins)    | Wie viele Minuten vor dem Ereignisstart soll die Statusvariable "Presence" auf "true" gesetzt werden
 Delay (mins)        | Wie viele Minuten nach dem Ereignisende soll die Statusvariable "Presence" auf "false" gesetzt werden
 
-Es ist zu beachten, dass es je nach Einstellungen und Kalendereinträgen Überlappungen geben kann.
+**Wichtig!** Im unteren Teil der Konfigurationsseite als übergeordnete Instanz die zugehörige **iCal Calendar Reader**-Instanz auswählen.
+
+Bei jeder Änderung der Parameter oder der übergeordneten Instanz wird eine sofortige Synchronisation und ein Update auf alle angemeldeten Notifier gegeben.
 
 ### 5. Statusvariablen und Profile
 
-Die Statusvariable wird automatisch angelegt. Das Löschen führt zu Fehlfunktionen.
+Nur **iCal Calendar Notifier**-Instanzen haben eine Statusvariable, diese wird automatisch angelegt. Das Löschen führt zu Fehlfunktionen.
 
 
 #### Statusvariablen
@@ -95,7 +97,7 @@ Es werden keine Variablenprofile angelegt.
 
 ### 6. WebFront
 
-Die Statusvariablen sind mir Profilen für das WebFront vorbereitet.
+Die Statusvariable ist mit Profilen für das WebFront vorbereitet.
 
 
 ### 7. PHP-Befehlsreferenz

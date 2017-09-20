@@ -1,0 +1,17 @@
+{
+    "elements":
+    [
+        { "type": "Label", "label": "Lagged notification" },
+        { "type": "NumberSpinner", "name": "PreNotifyMinutes", "caption": "Prenotify (mins)" },
+        { "type": "NumberSpinner", "name": "PostNotifyMinutes", "caption": "Delay (mins)" }
+    ],
+    "actions":
+    [
+    ],
+    "status":
+    [
+        { "code": 101, "icon": "active", "caption": "Instance is being created" },
+        { "code": 102, "icon": "active", "caption": "Instance is operational" },
+        { "code": 104, "icon": "inactive", "caption": "Inactive, please check parent instance" },
+    ]
+}

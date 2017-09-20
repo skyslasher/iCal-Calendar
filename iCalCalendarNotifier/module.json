@@ -1,0 +1,13 @@
+{
+	"id": "{F22703FF-8576-4AB1-A0E7-02E3116CD3BA}",
+	"name": "iCal Calendar Notifier",
+	"type": 3,
+	"vendor": "ergomation systems",
+	"aliases":
+	[
+	],
+	"parentRequirements": [ "{61BE4D3F-627D-4BB7-B193-120BB96D04C0}" ],
+	"childRequirements": [],
+	"implemented": [ "{97DB4023-73E1-4137-BE05-97F9FECF638F}" ],
+	"prefix": "ICCN"
+}

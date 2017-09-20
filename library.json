@@ -1,0 +1,12 @@
+{
+    "id": "{4AD5DAC7-0A63-4554-A3DC-A2F3CCC3B9E7}",
+    "author": "Andreas Hahn",
+    "name": "iCalendar reader and notifier for IP Symcon",
+    "url": "www.ergomation.de",
+    "compatibility": {
+        "version": "4.2"
+    },
+    "version": "1.0",
+    "build": 0,
+    "date": 0
+}

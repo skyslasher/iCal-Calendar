@@ -1,0 +1,13 @@
+{
+	"id": "{5127CDDC-2859-4223-A870-4D26AC83622C}",
+	"name": "iCal Calendar Reader",
+	"type": 1,
+	"vendor": "ergomation systems",
+	"aliases":
+	[
+	],
+	"parentRequirements": [],
+	"childRequirements": [ "{97DB4023-73E1-4137-BE05-97F9FECF638F}" ],
+	"implemented": [ "{61BE4D3F-627D-4BB7-B193-120BB96D04C0}" ],
+	"prefix": "ICCR"
+}

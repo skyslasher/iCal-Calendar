@@ -60,7 +60,7 @@ Update-freq. (mins) | Nach wie vielen Minuten soll ein Update des Feeds gelesen 
 
 Auf folgendes URL-Format ist bei den unterschiedlichen iCal-Servern zu achten:
 
-**Google**
+**Google:**
 `https://calendar.google.com/calendar/ical/(google-username)/private-(secret-hash-string)/basic.ics`  
 Zu findem im Google Kalender. Im Hauptbildschirm rechts oben auf das Zahnrad klicken, dort "Einstellungen" auswählen. Im folgenden Bildschirm den Tab "Kalender" auswählen, dann in der Kalenderliste links auf den zu importierenden Kalendernamen klicken. Es folgt ein neuer Bildschirm "Kalenderdetails", dort in der Zeile "Privatadresse" mit der rechten Maustaste auf das "ICAL"-Icon klicken und den dahinter liegenden Link kopieren.  
 

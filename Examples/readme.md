@@ -37,7 +37,7 @@ Kalendereinträge sind auf ID, Titel, Start- und Endzeitpunkt beschränkt.
 
 Wenn alles korrekt gelaufen ist wird im WebFront nun eine Calendar Control mit den Inhalten der beiden Kalender-Feeds angezeigt.  
 
-**iCalCalendarNotifier**-Instanzen können als smarte Filter auf Kalenderdaten eingesetzt werden, um z.B. nur bestimmte Zeiträume um den momentanen Zeitpunkt anzuzeigen wenn man sie als Feed-Quelle verwendet. Sie haben auch einen Einfluss darauf, wie von der zugehörigen **iCalCalendarReader**-Instanz Kalendereinträge aus der Vergangenheit geladen werden: Wenn das Ende des Eintrags plus die im Notifier gesetzte Delay-Zeit noch in der Zukunft liegt wird der Eintrag geladen, ansonsten verworfen.  
+Wenn man **iCalCalendarNotifier**-Instanzen als Feed-Quelle verwendet können sie als smarte Filter auf Kalenderdaten eingesetzt werden, um z.B. nur bestimmte Zeiträume um den momentanen Zeitpunkt anzuzeigen. Sie haben auch einen Einfluss darauf, wie von der zugehörigen **iCalCalendarReader**-Instanz Kalendereinträge aus der Vergangenheit geladen werden: Wenn das Ende des Eintrags plus die im Notifier gesetzte Delay-Zeit noch in der Zukunft liegt wird der Eintrag geladen, ansonsten verworfen.  
 
 Die Calendar Control ist umfassend dokumentiert (siehe oben), es gibt hier noch genug Spielraum für Anpassungen.  
 

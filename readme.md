@@ -62,15 +62,15 @@ Auf folgendes URL-Format ist bei den unterschiedlichen iCal-Servern zu achten:
 
 **Google:**
 `https://calendar.google.com/calendar/ical/(google-username)/private-(secret-hash-string)/basic.ics`  
-Zu findem im Google Kalender. Im Hauptbildschirm rechts oben auf das Zahnrad klicken, dort "Einstellungen" auswählen. Im folgenden Bildschirm den Tab "Kalender" auswählen, dann in der Kalenderliste links auf den zu importierenden Kalendernamen klicken. Es folgt ein neuer Bildschirm "Kalenderdetails", dort in der Zeile "Privatadresse" mit der rechten Maustaste auf das "ICAL"-Icon klicken und den dahinter liegenden Link kopieren.  
+Zu findem im Google Kalender. Im Hauptbildschirm rechts oben auf das Zahnrad klicken, dort *"Einstellungen"* auswählen. Im folgenden Bildschirm den Tab *"Kalender"* auswählen, dann in der Kalenderliste links auf den zu importierenden Kalendernamen klicken. Es folgt ein neuer Bildschirm *"Kalenderdetails"*, dort in der Zeile *"Privatadresse"* mit der rechten Maustaste auf das *"ICAL"*-Icon klicken und den dahinter liegenden Link kopieren.  
 
 **OwnCloud:**
 `http[s]://(server-name)[:server-port]/remote.php/dav/calendars/(user-name)/(calendar-name)?export`  
-Zu finden in der Kalender-App. Links in der Liste der Kalender auf "..." klicken, dann auf "Link". Den erscheinenden Link kopieren und das Suffix "?export" anhängen.  
+Zu finden in der Kalender-App. Links in der Liste der Kalender auf *"..."* klicken, dann auf *"Link"*. Den erscheinenden Link kopieren und das Suffix `?export` anhängen.  
 
 **Synology:**
-`http[s]://(server-name)[:server-port]/caldav/(user-name)/(calendar.name)--[suffix]`  
-Zu finden in der Calendar-App. Rechts in der Liste der Kalender das nach unten zeigende Dreieck neben dem Kalendernamen anklicken, "CalDAV-Konto" auswählen, in dem PopUp die Adresse für Thunderbird kopieren.  
+`http[s]://(server-name)[:server-port]/caldav/(user-name)/(calendar.name)--(suffix)`  
+Zu finden in der Calendar-App. Rechts in der Liste der Kalender das nach unten zeigende Dreieck neben dem Kalendernamen anklicken, *"CalDAV-Konto"* auswählen, in dem PopUp die Adresse für Thunderbird kopieren.  
 
 Sobald eine URL angegeben und gespeichert wurde beginnt die Synchronisierung. Fehler beim Zugriff auf den Kalender stehen im Systemlog (Tabreiter **Meldungen** in der IP-Symcon Management Konsole). Bei jeder Änderung der Parameter wird eine sofortige Synchronisation und ein Update auf alle angemeldeten Notifier gegeben.
 

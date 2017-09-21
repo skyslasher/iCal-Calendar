@@ -358,7 +358,7 @@ class iCalCalendarReader extends ErgoIPSModule {
     /*
         check if calendar URL syntax is valid
     */
-    private function CheckCalendarURLSyntax()
+    public function CheckCalendarURLSyntax()
     {
         $Status = 102;
 

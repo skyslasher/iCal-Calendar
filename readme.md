@@ -61,16 +61,16 @@ Update-freq. (mins) | Nach wie vielen Minuten soll ein Update des Feeds gelesen 
 Auf folgendes URL-Format ist bei den unterschiedlichen iCal-Servern zu achten:
 
 **OwnCloud:**
-`http[s]://[server-name]/remote.php/dav/calendars/[user-name]/[calendar-name]?export`  
+`http[s]://(server-name)[:server-port]/remote.php/dav/calendars/(user-name)/(calendar-name)?export`  
 Zu finden in der Kalender-App, links in der Liste der Kalender auf "..." klicken, dann auf "Link". Den erscheinenden Link kopieren und das Suffix "?export" anhängen.
 
 **Synology:**
-`https://[server-name]/caldav/[user-name]/[calendar.name]--[suffix]`  
+`http[s]://(server-name)[:server-port]/caldav/(user-name)/(calendar.name)--[suffix]`  
 Zu finden in der Calendar-App, rechts in der Liste der Kalender das nach unten zeigende Dreieck neben dem Kalendernamen anklicken, "CalDAV-Konto" auswählen, in dem PopUp die Adresse für Thunderbird kopieren.
 
 Sobald eine URL angegeben und gespeichert wurde beginnt die Synchronisierung. Fehler beim Zugriff auf den Kalender stehen im Systemlog (Tabreiter **Meldungen** in der IP-Symcon Management Konsole). Bei jeder Änderung der Parameter wird eine sofortige Synchronisation und ein Update auf alle angemeldeten Notifier gegeben.
 
-Mit "Instanz hinzufügen" nun eine Instanz **iCal Calendar Notifier** hinzufügen. Dieser ist ebenfalls unter dem Hersteller **ergomation systems** aufgeführt.
+Mit "Instanz hinzufügen" nun eine Instanz **iCal Calendar Notifier** hinzufügen. Diese ist ebenfalls unter dem Hersteller **ergomation systems** aufgeführt.
 
 Die **iCal Calendar Notifier** haben folgende Konfigurationsoptionen:
 
@@ -84,7 +84,7 @@ Delay (mins)        | Wie viele Minuten nach dem Ereignisende soll die Statusvar
 
 **Wichtig!** Im unteren Teil der Konfigurationsseite als übergeordnete Instanz die zugehörige **iCal Calendar Reader**-Instanz auswählen.
 
-Bei jeder Änderung der Parameter oder der übergeordneten Instanz wird eine sofortige Synchronisation und ein Update auf alle angemeldeten Notifier gegeben.
+Bei jeder Änderung der Parameter oder der übergeordneten Instanz wird eine sofortige Synchronisation angestoßen und ein Update auf alle angemeldeten Notifier gegeben.
 
 ### 5. Statusvariablen und Profile
 
@@ -119,6 +119,7 @@ Gibt einen Array mit sämtlichen registrierten Notifier-Konfigurationen als JSON
 
 `void ICCR_GetCachedCalendar(integer $InstanceID);`   
 Gibt einen Array mit dem zwischengespeicherten und in die lokale Zeitzone übertragenen Kalenderdaten als JSON-codierten String aus.
+Die Funktion liefert keinerlei Rückgabewert.  
 
 `void ICCR_TriggerNotifications(integer $InstanceID);`   
 Forciert eine sofortige Überprüfung, ob Notifications an die registrierten Notifier gesendet werden müssen.

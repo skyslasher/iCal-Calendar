@@ -61,11 +61,11 @@ Update-freq. (mins) | Nach wie vielen Minuten soll ein Update des Feeds gelesen 
 Auf folgendes URL-Format ist bei den unterschiedlichen iCal-Servern zu achten:
 
 **OwnCloud:**
-`http[s]://[server-name]/remote.php/dav/calendars/[user-name]/[calendar-name]?export`
+`http[s]://[server-name]/remote.php/dav/calendars/[user-name]/[calendar-name]?export`  
 Zu finden in der Kalender-App, links in der Liste der Kalender auf "..." klicken, dann auf "Link". Den erscheinenden Link kopieren und das Suffix "?export" anhängen.
 
 **Synology:**
-`https://[server-name]/caldav/[user-name]/[calendar.name]--[suffix]`
+`https://[server-name]/caldav/[user-name]/[calendar.name]--[suffix]`  
 Zu finden in der Calendar-App, rechts in der Liste der Kalender das nach unten zeigende Dreieck neben dem Kalendernamen anklicken, "CalDAV-Konto" auswählen, in dem PopUp die Adresse für Thunderbird kopieren.
 
 Sobald eine URL angegeben und gespeichert wurde beginnt die Synchronisierung. Fehler beim Zugriff auf den Kalender stehen im Systemlog (Tabreiter **Meldungen** in der IP-Symcon Management Konsole). Bei jeder Änderung der Parameter wird eine sofortige Synchronisation und ein Update auf alle angemeldeten Notifier gegeben.

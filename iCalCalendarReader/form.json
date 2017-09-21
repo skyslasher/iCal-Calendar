@@ -12,7 +12,7 @@
     ],
     "actions":
     [
-        { "type": "Button", "label": "Check calendar", "onClick": "ICCR_CheckCalendarURL( $id );" }
+        { "type": "Button", "label": "Check calendar", "onClick": "ICCR_CheckCalendarURLSyntax( $id );" }
     ],
     "status":
     [

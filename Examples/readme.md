@@ -14,7 +14,7 @@ Grundlage für die Visualisierung ist die Calendar-Control [Full Calendar](https
 
 ### 1. Funktionsumfang
 
-Full-Blown Calendar-Control, die umfangreich den eigenen Wünschen angepasst werden kann. Siehe hierzu die Dokumentation der Control unter https://fullcalendar.io/docs/
+Full-Blown Calendar-Control, die umfangreich den eigenen Wünschen angepasst werden kann. Siehe hierzu die Dokumentation der Control unter https://fullcalendar.io/docs/  
 Kalendereinträge sind auf ID, Titel, Start- und Endzeitpunkt beschränkt.
 
 
@@ -39,7 +39,7 @@ Wenn alles korrekt gelaufen ist wird im WebFront nun eine Calendar Control mit d
 
 **iCalCalendarNotifier**-Instanzen können als smarte Filter auf Kalenderdaten eingesetzt werden, um z.B. nur bestimmte Zeiträume um den momentanen Zeitpunkt anzuzeigen wenn man sie als Feed-Quelle verwendet. Sie haben auch einen Einfluss darauf, wie von der zugehörigen **iCalCalendarReader**-Instanz Kalendereinträge aus der Vergangenheit geladen werden: Wenn das Ende des Eintrags plus die im Notifier gesetzte Delay-Zeit noch in der Zukunft liegt wird der Eintrag geladen, ansonsten verworfen.  
 
-Die Calendar Control ist umfassend in https://fullcalendar.io/docs/ dokumentiert, es gibt hier noch genug Spielraum für Anpassungen.
+Die Calendar Control ist umfassend dokumentiert (siehe oben), es gibt hier noch genug Spielraum für Anpassungen.  
 
 Das Theming kann in Zeile 6 angepasst werden. Für andere Bootstrap-Themes den Theme-Namen `darkly` im CSS-Pfad durch einen dieser Theme-Namen ersetzen:
 cosmo, cyborg, darkly, flatly, journal, lumen, paper, readable, sandstone, simplex, slate, solar, spacelab, superhero, united oder yeti.

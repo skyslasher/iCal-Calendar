@@ -434,7 +434,8 @@ class iCalCalendarReader extends ErgoIPSModule {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false ); // yes, easy but lazy
 		curl_setopt( $curl, CURLOPT_CONNECTTIMEOUT, 25 ); // 30s maximum script execution time
 		curl_setopt( $curl, CURLOPT_TIMEOUT, 25 ); // 30s maximum script execution time
-		curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 0 );
+		curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1 );
+		curl_setopt( $curl, CURLOPT_MAXREDIRS, 5 ); // educated guess
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
         if ( '' != $username )
             curl_setopt( $curl, CURLOPT_USERPWD, $username . ':' . $password );

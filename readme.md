@@ -18,7 +18,7 @@ Diese Bibliothek beinhaltet zwei Module zur Einbindung von Kalenderdateien/-feed
 
 ### 1. Funktionsumfang
 
-Mit dem Modul **iCal Calendar Reader** werden Kalenderdaten eingelesen (getestet mit Google Calendar, ownCloud Calendar und Synology Calendar), das Modul **iCal Calendar Notifier** reagiert mit einstellbaren Vor- und Nachlaufzeiten mit einer Statusvariable auf Kalenderereignisse. Zum aktuellen Status kann ein Skript weitere Kalenderdaten des/der auslösende(n) Ereigniss(e) abfragen. Es sind beliebig viele **iCal Calendar Notifier**-Instanzen mit unterschiedlichen Einstellungen an eine **iCal Calendar Reader**-Instanz koppelbar. 
+Mit dem Modul **iCal Calendar Reader** werden Kalenderdaten eingelesen (getestet mit Google Calendar, ownCloud Calendar, Synology Calendar und iCloud), das Modul **iCal Calendar Notifier** reagiert mit einstellbaren Vor- und Nachlaufzeiten mit einer Statusvariable auf Kalenderereignisse. Zum aktuellen Status kann ein Skript weitere Kalenderdaten des/der auslösende(n) Ereigniss(e) abfragen. Es sind beliebig viele **iCal Calendar Notifier**-Instanzen mit unterschiedlichen Einstellungen an eine **iCal Calendar Reader**-Instanz koppelbar. 
 
 Damit ist es z.B. sehr einfach möglich einen zentralen Anwesenheitskalender im Internet zu pflegen, IP Symcon steuert damit automatisch Heizung, Alarmanlage und Anwesenheitssimulation. Mit der Auswertung von zusätzlichen Informationen im Kalendereintrag durch ein Skript können z.B. bestimmte Transponder für den Zugang gesperrt bzw. freigeschaltet werden.
 
@@ -71,6 +71,10 @@ Zu finden in der Kalender-App. Links in der Liste der Kalender auf *"..."* klick
 **Synology:**
 `http[s]://(server-name)[:server-port]/caldav/(user-name)/(calendar.name)--(suffix)`  
 Zu finden in der Calendar-App. Rechts in der Liste der Kalender das nach unten zeigende Dreieck neben dem Kalendernamen anklicken, *"CalDAV-Konto"* auswählen, in dem PopUp die Adresse für Thunderbird kopieren.  
+
+**iCloud**
+`https://(server).icloud.com/published/(number)/(secret-hash-string-1)-(secret-hash-string-2)`  
+Im macOS Kalender-Programm rechte Maustaste auf den zu importierenden iCloud-Kalender klicken, *"Teilen"* auswählen und *"Öffentlicher Kalender"* auswählen. Den erscheindenen Link kopieren und das Protokoll `webcal` gegen `https` tauschen.  
 
 Sobald eine URL angegeben und gespeichert wurde beginnt die Synchronisierung. Fehler beim Zugriff auf den Kalender stehen im Systemlog (Tabreiter **Meldungen** in der IP-Symcon Management Konsole). Bei jeder Änderung der Parameter wird eine sofortige Synchronisation und ein Update auf alle angemeldeten Notifier gegeben.
 

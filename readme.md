@@ -72,9 +72,9 @@ Zu finden in der Kalender-App. Links in der Liste der Kalender auf *"..."* klick
 `http[s]://(server-name)[:server-port]/caldav/(user-name)/(calendar.name)--(suffix)`  
 Zu finden in der Calendar-App. Rechts in der Liste der Kalender das nach unten zeigende Dreieck neben dem Kalendernamen anklicken, *"CalDAV-Konto"* auswählen, in dem PopUp die Adresse für Thunderbird kopieren.  
 
-**iCloud**
+**iCloud:**
 `https://(server).icloud.com/published/(number)/(secret-hash-string-1)-(secret-hash-string-2)`  
-Im macOS Kalender-Programm rechte Maustaste auf den zu importierenden iCloud-Kalender klicken, *"Teilen"* auswählen und *"Öffentlicher Kalender"* auswählen. Den erscheinenden Link kopieren und das Protokoll `webcal` gegen `https` tauschen.  
+Im macOS Kalender-Programm mit der rechten Maustaste auf den zu importierenden iCloud-Kalender klicken, *"Teilen"* auswählen und *"Öffentlicher Kalender"* auswählen. Den erscheinenden Link kopieren und das Protokoll `webcal` gegen `https` tauschen.  
 
 Sobald eine URL angegeben und gespeichert wurde beginnt die Synchronisierung. Fehler beim Zugriff auf den Kalender stehen im Systemlog (Tabreiter **Meldungen** in der IP-Symcon Management Konsole). Bei jeder Änderung der Parameter wird eine sofortige Synchronisation und ein Update auf alle angemeldeten Notifier gegeben.
 

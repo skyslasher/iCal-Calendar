@@ -74,7 +74,7 @@ Zu finden in der Calendar-App. Rechts in der Liste der Kalender das nach unten z
 
 **iCloud**
 `https://(server).icloud.com/published/(number)/(secret-hash-string-1)-(secret-hash-string-2)`  
-Im macOS Kalender-Programm rechte Maustaste auf den zu importierenden iCloud-Kalender klicken, *"Teilen"* auswählen und *"Öffentlicher Kalender"* auswählen. Den erscheindenen Link kopieren und das Protokoll `webcal` gegen `https` tauschen.  
+Im macOS Kalender-Programm rechte Maustaste auf den zu importierenden iCloud-Kalender klicken, *"Teilen"* auswählen und *"Öffentlicher Kalender"* auswählen. Den erscheinenden Link kopieren und das Protokoll `webcal` gegen `https` tauschen.  
 
 Sobald eine URL angegeben und gespeichert wurde beginnt die Synchronisierung. Fehler beim Zugriff auf den Kalender stehen im Systemlog (Tabreiter **Meldungen** in der IP-Symcon Management Konsole). Bei jeder Änderung der Parameter wird eine sofortige Synchronisation und ein Update auf alle angemeldeten Notifier gegeben.
 

@@ -40,6 +40,7 @@ class ICCR_iCalImporter
 	private $PostNotifySeconds = 0;
 	private $SecondsToCache;
 	private $CacheSizeDateTime;
+	private $CalendarTimezones;
 
     /*
         debug method, depending on defined constant
@@ -51,6 +52,72 @@ class ICCR_iCalImporter
     }
 
     /*
+        convert the timezone RRULE to a datetime object in the given/current year
+    */
+	private function TZRRuleToDateTime( $RRule, $Year = '' )
+	{
+		$result = false;
+		// always yearly, once a year
+		if ( array_key_exists( "BYDAY", $RRule ) )
+		{
+			if ( array_key_exists( "0", $RRule[ "BYDAY" ] ) )
+			{
+				$Occ = $RRule[ "BYDAY" ][ "0" ];
+				if ( array_key_exists( "DAY", $RRule[ "BYDAY" ] ) )
+				{
+					$Day = $RRule[ "BYDAY" ][ "DAY" ];
+					if ( array_key_exists( "BYMONTH", $RRule ) )
+					{
+						$Month = $RRule[ "BYMONTH" ];
+						$DateObj = DateTime::createFromFormat( '!m', $Month );
+						$MonthName = $DateObj->format( 'F' );
+						switch ( $Day ) // RFC5543
+						{
+							case "MO": $DayName = "Monday"; break;
+							case "TU": $DayName = "Tuesday"; break;
+							case "WE": $DayName = "Wednesday"; break;
+							case "TH": $DayName = "Thursday"; break;
+							case "FR": $DayName = "Friday"; break;
+							case "SA": $DayName = "Saturday"; break;
+							case "SU": $DayName = "Sunday"; break;
+							default: $DayName = "Sunday"; break;
+						}
+						return date_timestamp_set( new DateTime, strtotime( $Occ . " " . $DayName . " " . $MonthName . " " . $Year . "00:00:00" ) );
+					}
+				}
+			}
+		}
+	}
+
+    /*
+        apply the time offset from a timezone provided by the loaded calendar
+    */
+	private function ApplyCustomTimezoneOffset( $EventDateTime, $CustomTimezoneName )
+	{
+		// is timezone in calendar provided timezone?
+		foreach ( $this->CalendarTimezones as $CalendarTimezone )
+		{
+			if ( $CalendarTimezone[ "TZID" ] == $CustomTimezoneName )
+			{
+				$DSTStartDateTime = $this->TZRRuleToDateTime( $CalendarTimezone[ "DSTSTART" ], $EventDateTime->format( "Y" ) );
+				$DSTEndDateTime = $this->TZRRuleToDateTime( $CalendarTimezone[ "DSTEND" ], $EventDateTime->format( "Y" ) );
+
+				// between these dates?
+				if ( ( $EventDateTime > $DSTStartDateTime ) && ( $EventDateTime < $DSTEndDateTime ) )
+			    {
+					$EventDateTime->add( DateInterval::createFromDateString( strtotime( $CalendarTimezone[ "DSTOFFSET" ] ) ) );
+			    }
+				else
+				{
+					$EventDateTime->add( DateInterval::createFromDateString( strtotime( $CalendarTimezone[ "OFFSET" ] ) ) );
+				}
+				break;
+			}
+		}
+		return $EventDateTime;
+	}
+
+    /*
         convert iCal format to PHP DateTime respecting timezone information
         every information will be transformed into the current timezone!
     */
@@ -59,6 +126,15 @@ class ICCR_iCalImporter
 		$Year = $DT[ "value" ][ "year" ];
 		$Month = $DT[ "value" ][ "month" ];
 		$Day = $DT[ "value" ][ "day" ];
+
+		$WholeDay = false;
+		if ( array_key_exists( "params", $DT ) && array_key_exists( "VALUE", $DT[ "params" ] ) )
+		{
+			// whole-day, this is not timezone relevant!
+			if ( "DATE" == $DT[ "params" ][ "VALUE" ] )
+				$WholeDay = true;
+		}
+
 		if ( array_key_exists( "hour", $DT[ "value" ] ) )
 			$Hour = $DT[ "value" ][ "hour" ];
 		else
@@ -72,7 +148,7 @@ class ICCR_iCalImporter
 		else
 			$Sec = 0;
         // owncloud calendar
-		if ( array_key_exists( "TZID", $DT[ "params" ] ) )
+		if ( array_key_exists( "params", $DT ) && array_key_exists( "TZID", $DT[ "params" ] ) )
 			$Timezone = $DT[ "params" ][ "TZID" ];
         // google calendar
         else if ( array_key_exists( "tz", $DT[ "value" ] ) )
@@ -81,9 +157,33 @@ class ICCR_iCalImporter
 			$Timezone = $this->Timezone;
 
 		$DateTime = new DateTime();
-		$DateTime->setTimezone( timezone_open ( $Timezone ) );
-		$DateTime->setDate( $Year, $Month, $Day );
-		$DateTime->setTime( $Hour, $Min, $Sec );
+
+		if ( $WholeDay )
+		{
+			$DateTime->setTimezone( timezone_open( $this->Timezone ) );
+			$DateTime->setDate( $Year, $Month, $Day );
+			$DateTime->setTime( $Hour, $Min, $Sec );
+		}
+		else
+		{
+			$IsStandardTimezone = true;
+			$SetTZResult = @$DateTime->setTimezone( timezone_open( $Timezone ) );
+			if ( false === $SetTZResult )
+			{
+				// no standard timezone, set to UTC first
+				$DateTime->setTimezone( timezone_open ( 'UTC' ) );
+				$IsStandardTimezone = false;
+		    }
+			$DateTime->setDate( $Year, $Month, $Day );
+			$DateTime->setTime( $Hour, $Min, $Sec );
+			if ( !$IsStandardTimezone )
+			{
+				// set UTC offset if provided in calendar data
+				$DateTime = $this->ApplyCustomTimezoneOffset( $DateTime, $Timezone );
+			}
+			// convert to local timezone
+			$DateTime->setTimezone( timezone_open( $this->Timezone ) );
+		}
 		return $DateTime;
 	}
 
@@ -106,6 +206,8 @@ class ICCR_iCalImporter
 	public function ImportCalendar( $iCalData )
 	{
         $iCalCalendarArray = array();
+		$this->CalendarTimezones = array();
+
 		$Config = array(
             "unique_id" => "ergomation.de",
             "TZID" => $this->Timezone,
@@ -114,6 +216,21 @@ class ICCR_iCalImporter
 		$vCalendar = new kigkonsult\iCalcreator\vcalendar( $Config );
 		$vCalendar->parse( $iCalData );
 
+		// get calendar supplied timezones
+		while( $Comp = $vCalendar->getComponent( "vtimezone" ) )
+		{
+			$ProvidedTZ = array();
+			$Standard = $Comp->getComponent( "STANDARD" );
+			$Daylight = $Comp->getComponent( "DAYLIGHT" );
+
+			$ProvidedTZ[ "TZID" ] = $Comp->getProperty( "TZID" );
+			$ProvidedTZ[ "DSTSTART" ] = $Daylight->getProperty( "rrule", false, false );
+			$ProvidedTZ[ "DSTEND" ] = $Standard->getProperty( "rrule", false, false );
+			$ProvidedTZ[ "OFFSET" ] = $Standard->getProperty( "TZOFFSETTO" );
+			$ProvidedTZ[ "DSTOFFSET" ] = $Standard->getProperty( "TZOFFSETFROM" );
+
+			$this->CalendarTimezones[] = $ProvidedTZ;
+		}
 		while( $Comp = $vCalendar->getComponent( "vevent" ) )
 		{
 			$ThisEventArray = array();
@@ -141,7 +258,15 @@ class ICCR_iCalImporter
 				if ( is_array( $CalRRule ) )
 				{
 					// $this->LogDebug( "Recurring event" );
-					$RRule = new RRule( array_merge( $CalRRule, array( "DTSTART" => $StartingTime ) ) );
+					if ( array_key_exists( "UNTIL", $CalRRule ) )
+					{
+						$UntilDateTime = $this->iCalDateTimeArrayToDateTime( array( "value" => $CalRRule[ "UNTIL" ] ) );
+						// replace iCal date array with datetime object
+						$CalRRule[ "UNTIL" ] = $UntilDateTime;
+					}
+					// replace/set iCal date array with datetime object
+					$CalRRule[ "DTSTART" ] = $StartingTime;
+					$RRule = new RRule( $CalRRule );
 					foreach ( $RRule->getOccurrencesBetween( $this->NowDateTime, $this->CacheSizeDateTime ) as $Occurrence )
                     {
 						$ThisEvent[ "From" ] = date_timestamp_get( $Occurrence );

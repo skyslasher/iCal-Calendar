@@ -71,7 +71,7 @@ class ICCR_iCalImporter
 						$Month = $RRule[ "BYMONTH" ];
 						$DateObj = DateTime::createFromFormat( '!m', $Month );
 						$MonthName = $DateObj->format( 'F' );
-						switch ( $Day ) // RFC5543
+						switch ( $Day ) // RFC5545
 						{
 							case "MO": $DayName = "Monday"; break;
 							case "TU": $DayName = "Tuesday"; break;
@@ -223,14 +223,17 @@ class ICCR_iCalImporter
 			$Standard = $Comp->getComponent( "STANDARD" );
 			$Daylight = $Comp->getComponent( "DAYLIGHT" );
 
-			$ProvidedTZ[ "TZID" ] = $Comp->getProperty( "TZID" );
-			$ProvidedTZ[ "DSTSTART" ] = $Daylight->getProperty( "rrule", false, false );
-			$ProvidedTZ[ "DSTEND" ] = $Standard->getProperty( "rrule", false, false );
-			$ProvidedTZ[ "OFFSET" ] = $Standard->getProperty( "TZOFFSETTO" );
-			$ProvidedTZ[ "DSTOFFSET" ] = $Standard->getProperty( "TZOFFSETFROM" );
+            if ( ( false !== $Standard ) && ( false !== $Daylight ) )
+            {
+                $ProvidedTZ[ "TZID" ] = $Comp->getProperty( "TZID" );
+                $ProvidedTZ[ "DSTSTART" ] = $Daylight->getProperty( "rrule", false, false );
+                $ProvidedTZ[ "DSTEND" ] = $Standard->getProperty( "rrule", false, false );
+                $ProvidedTZ[ "OFFSET" ] = $Standard->getProperty( "TZOFFSETTO" );
+                $ProvidedTZ[ "DSTOFFSET" ] = $Standard->getProperty( "TZOFFSETFROM" );
 
-			$this->CalendarTimezones[] = $ProvidedTZ;
-		}
+                $this->CalendarTimezones[] = $ProvidedTZ;
+            }
+        }
 		while( $Comp = $vCalendar->getComponent( "vevent" ) )
 		{
 			$ThisEventArray = array();

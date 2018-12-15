@@ -8,7 +8,7 @@
 
         { "type": "Label", "label": "Synchronization" },
         { "type": "NumberSpinner", "name": "DaysToCache", "caption": "Cachesize (days)" },
-        { "type": "NumberSpinner", "name": "UpdateFrequency", "caption": "Update freq. (mins)" },
+        { "type": "NumberSpinner", "name": "UpdateFrequency", "caption": "Update freq. (mins)" }
     ],
     "actions":
     [

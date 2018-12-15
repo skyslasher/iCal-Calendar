@@ -4,9 +4,9 @@
     "name": "iCalendar reader and notifier for IP Symcon",
     "url": "www.ergomation.de",
     "compatibility": {
-        "version": "4.2"
+        "version": "5.0"
     },
-    "version": "1.0",
-    "build": 0,
+    "version": "1.1",
+    "build": 15,
     "date": 0
 }

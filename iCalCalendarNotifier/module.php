@@ -91,7 +91,8 @@ class iCalCalendarNotifier extends ErgoIPSModule {
     /*
         react on user configuration dialog
     */
-    public function ApplyChanges() {
+    public function ApplyChanges()
+    {
         parent::ApplyChanges();
 
         // filter on messages only for this adress

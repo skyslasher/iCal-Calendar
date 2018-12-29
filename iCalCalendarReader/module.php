@@ -373,6 +373,7 @@ class iCalCalendarReader extends ErgoIPSModule {
         // create timer
         $this->RegisterTimer( "Update", 0, 'ICCR_UpdateCalendar( $_IPS["TARGET"] );' ); // no update on init
         $this->RegisterTimer( "Cron", 1000 * 60 , 'ICCR_TriggerNotifications( $_IPS["TARGET"] );' ); // cron runs every minute
+        $this->RegisterTimer( "Cron", 5000 * 60 , 'ICCR_UpdateClientConfig( $_IPS["TARGET"] );' ); // cron runs every 5 minutes
     }
 
     /*
@@ -519,12 +520,14 @@ class iCalCalendarReader extends ErgoIPSModule {
     */
     private function GetChildrenConfig()
     {
+        $this->LogDebug( 'Entering GetChildrenConfig()' );
         // empty configuration buffer
         $Notifications = array();
         $ChildInstances = IPS_GetInstanceListByModuleID( ICCN_Instance_GUID );
-        if ( sizeof( $ChildInstances ) > 0 )
+        if ( sizeof( $ChildInstances ) <= 0 )
             return;
         // transfer configuration
+        $this->LogDebug( 'Transfering configuration from notifier children' );
         foreach( $ChildInstances as $ChInstance )
             if ( IPS_GetInstance( $ChInstance )[ "ConnectionID" ] == $this->InstanceID )
             {
@@ -739,6 +742,7 @@ class iCalCalendarReader extends ErgoIPSModule {
         if ( empty( $Notifications ) )
             return;
 
+        $this->LogDebug( 'Processing notifications' );
         foreach ($Notifications as $Notification )
         {
             $Notification[ "Status" ] = false;

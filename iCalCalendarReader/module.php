@@ -372,8 +372,8 @@ class iCalCalendarReader extends ErgoIPSModule {
 
         // create timer
         $this->RegisterTimer( "Update", 0, 'ICCR_UpdateCalendar( $_IPS["TARGET"] );' ); // no update on init
-        $this->RegisterTimer( "Cron", 1000 * 60 , 'ICCR_TriggerNotifications( $_IPS["TARGET"] );' ); // cron runs every minute
-        $this->RegisterTimer( "Cron", 5000 * 60 , 'ICCR_UpdateClientConfig( $_IPS["TARGET"] );' ); // cron runs every 5 minutes
+        $this->RegisterTimer( "Cron1", 1000 * 60 , 'ICCR_TriggerNotifications( $_IPS["TARGET"] );' ); // cron runs every minute
+        $this->RegisterTimer( "Cron5", 5000 * 60 , 'ICCR_UpdateClientConfig( $_IPS["TARGET"] );' ); // cron runs every 5 minutes
     }
 
     /*

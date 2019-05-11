@@ -13,7 +13,7 @@ include_once __DIR__ . '/../libs/php-rrule-master/src/RRule.php';
 include_once __DIR__ . '/../libs/php-rrule-master/src/RSet.php';
 
 
-define( 'ICCR_Debug', true );
+define( 'ICCR_Debug', false );
 
 
 define( 'ICCR_Property_CalendarURL', 'CalendarServerURL' );

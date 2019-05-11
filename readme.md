@@ -27,7 +27,7 @@ Auch die Visualisierung von Einträgen in öffentlichen Kalendern (z.B. Müllabf
 Kalender werden beim Laden unter Berücksichtigung ihrer jeweiligen Zeitzone in die lokale Zeitzone umgerechnet, sich wiederholende Termine als mehrere Einzeltermine abgespeichert.
 
 Diese Bibliothek nutzt folgende externe Bibliotheken im Verzeichnis `/lib`:
-* iCalcreator (Version 2.24) `https://github.com/iCalcreator/iCalcreator`, AGPLv3-Lizenz
+* iCalcreator (Version 2.26) `https://github.com/iCalcreator/iCalcreator`, AGPLv3-Lizenz
 * RRULE for PHP (Stand 2017-05-15) `https://github.com/rlanvin/php-rrule`, MIT-Lizenz
 
 

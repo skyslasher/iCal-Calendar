@@ -123,10 +123,10 @@ Die Statusvariable ist mit Profilen für das WebFront vorbereitet.
 #### iCal Calendar Reader
 
 `json_string ICCR_GetClientConfig(integer $InstanceID);`   
-Gibt einen Array mit sämtlichen registrierten Notifier-Konfigurationen als JSON-codierten String aus. 
+Gibt ein Array mit sämtlichen registrierten Notifier-Konfigurationen als JSON-codierten String aus. 
 
 `json_string ICCR_GetCachedCalendar(integer $InstanceID);`   
-Gibt einen Array mit dem zwischengespeicherten und in die lokale Zeitzone übertragenen Kalenderdaten als JSON-codierten String aus. 
+Gibt ein Array mit den zwischengespeicherten und in die lokale Zeitzone übertragenen Kalenderdaten als JSON-codierten String aus. 
 
 `void ICCR_TriggerNotifications(integer $InstanceID);`   
 Forciert eine sofortige Überprüfung, ob Notifications an die registrierten Notifier gesendet werden müssen.

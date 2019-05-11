@@ -149,4 +149,4 @@ Die Funktion liefert keinerlei Rückgabewert.
 Gibt den Wert der Statusvariable "Presence" zurück.  
 
 `json_string ICCN_GetNotifierPresenceReason(integer $InstanceID);`   
-Gibt einen Array der den "Presence"-Status bedingenden Ereignisse als JSON-codierten String aus.
+Gibt ein Array der den "Presence"-Status bedingenden Ereignisse als JSON-codierten String aus.

@@ -8,11 +8,12 @@ include_once __DIR__ . '/../libs/includes.php';
 include_once __DIR__ . '/../libs/iCalcreator-master/autoload.php';
 include_once __DIR__ . '/../libs/php-rrule-master/src/RRuleInterface.php';
 include_once __DIR__ . '/../libs/php-rrule-master/src/RfcParser.php';
+include_once __DIR__ . '/../libs/php-rrule-master/src/RRuleTrait.php';
 include_once __DIR__ . '/../libs/php-rrule-master/src/RRule.php';
 include_once __DIR__ . '/../libs/php-rrule-master/src/RSet.php';
 
 
-define( 'ICCR_Debug', false );
+define( 'ICCR_Debug', true );
 
 
 define( 'ICCR_Property_CalendarURL', 'CalendarServerURL' );
@@ -269,6 +270,18 @@ class ICCR_iCalImporter
 					}
 					// replace/set iCal date array with datetime object
 					$CalRRule[ "DTSTART" ] = $StartingTime;
+                    // the array underneath "BYDAY" needs to be exactly one level deep. If not, lift it up
+                    foreach( $CalRRule[ "BYDAY" ] as &$day )
+                    {
+                        if ( is_array( $day ) )
+                        {
+                            if ( array_key_exists( "DAY", $day ) )
+                            {
+                                $day = $day[ "DAY" ];
+                            }
+                        }
+                    }
+                    $this->LogDebug( "Decomposing RRule " . print_r( $CalRRule, true ) );
 					$RRule = new RRule( $CalRRule );
 					foreach ( $RRule->getOccurrencesBetween( $this->NowDateTime, $this->CacheSizeDateTime ) as $Occurrence )
                     {

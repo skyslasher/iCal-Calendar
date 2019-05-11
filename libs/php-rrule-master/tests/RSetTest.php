@@ -1,9 +1,15 @@
 <?php
 
+namespace RRule\Tests;
+
 use RRule\RSet;
 use RRule\RRule;
+use DateTimeZone;
+use ReflectionObject;
+use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class RSetTest extends PHPUnit_Framework_TestCase
+class RSetTest extends TestCase
 {
 	public function testCombineRRule()
 	{
@@ -81,6 +87,55 @@ class RSetTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($rset->occursAt('1997-09-03 09:00'));
 	}
 
+	public function testRemoveDateFromRSet()
+	{
+		$rset = new RSet();
+		$rset->addRRule(array(
+			'FREQ' => 'YEARLY',
+			'COUNT' => 1,
+			'BYDAY' => 'TU',
+			'DTSTART' => date_create('1997-09-02 09:00')
+		));
+		$rset->addDate(date_create('1997-09-04 09:00'));
+		$rset->addDate(date_create('1997-09-09 09:00'));
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+			date_create('1997-09-04 09:00'),
+			date_create('1997-09-09 09:00')
+		), $rset->getOccurrences());
+
+		$rset->removeDate(date_create('1997-09-09 09:00'));
+
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+			date_create('1997-09-04 09:00')
+		), $rset->getOccurrences());
+	}
+
+	public function testClearDatesFromRSet()
+	{
+		$rset = new RSet();
+		$rset->addRRule(array(
+			'FREQ' => 'YEARLY',
+			'COUNT' => 1,
+			'BYDAY' => 'TU',
+			'DTSTART' => date_create('1997-09-02 09:00')
+		));
+		$rset->addDate(date_create('1997-09-04 09:00'));
+		$rset->addDate(date_create('1997-09-09 09:00'));
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+			date_create('1997-09-04 09:00'),
+			date_create('1997-09-09 09:00')
+		), $rset->getOccurrences());
+
+		$rset->clearDates();
+
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+		), $rset->getOccurrences());
+	}
+
 	public function testCombineRRuleAndExRule()
 	{
 		$rset = new RSet();
@@ -145,9 +200,83 @@ class RSetTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($rset->occursAt('1997-09-04 09:00'));
 	}
 
+	public function testRemoveExdDateFromRSet()
+	{
+		$rset = new RSet();
+		$rset->addRRule(array(
+			'FREQ' => 'YEARLY',
+			'COUNT' => 6,
+			'BYDAY' => 'TU, TH',
+			'DTSTART' => date_create('1997-09-02 09:00')
+		));
+
+		$rset->addExdate('1997-09-04 09:00:00');
+		$rset->addExdate('1997-09-11 09:00:00');
+		$rset->addExdate('1997-09-18 09:00:00'); // adding out of order
+
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+			date_create('1997-09-09 09:00'),
+			date_create('1997-09-16 09:00')
+		), $rset->getOccurrences());
+
+		$rset->removeExdate('1997-09-11 09:00:00');
+
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+			date_create('1997-09-09 09:00'),
+			date_create('1997-09-11 09:00'),
+			date_create('1997-09-16 09:00')
+		), $rset->getOccurrences());
+
+		$rset->removeExdate('1997-09-18 09:00:00');
+		$rset->removeExdate('1997-09-04 09:00:00');
+
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+			date_create('1997-09-04 09:00'),
+			date_create('1997-09-09 09:00'),
+			date_create('1997-09-11 09:00'),
+			date_create('1997-09-16 09:00'),
+			date_create('1997-09-18 09:00')
+		), $rset->getOccurrences());
+	}
+
+	public function testClearExDatesFromRSet()
+	{
+		$rset = new RSet();
+		$rset->addRRule(array(
+			'FREQ' => 'YEARLY',
+			'COUNT' => 6,
+			'BYDAY' => 'TU, TH',
+			'DTSTART' => date_create('1997-09-02 09:00')
+		));
+
+		$rset->addExdate('1997-09-04 09:00:00');
+		$rset->addExdate('1997-09-11 09:00:00');
+		$rset->addExdate('1997-09-18 09:00:00'); // adding out of order
+
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+			date_create('1997-09-09 09:00'),
+			date_create('1997-09-16 09:00')
+		), $rset->getOccurrences());
+
+		$rset->clearExDates();
+
+		$this->assertEquals(array(
+			date_create('1997-09-02 09:00'),
+			date_create('1997-09-04 09:00'),
+			date_create('1997-09-09 09:00'),
+			date_create('1997-09-11 09:00'),
+			date_create('1997-09-16 09:00'),
+			date_create('1997-09-18 09:00')
+		), $rset->getOccurrences());
+	}
+
 	public function testCombineEverything()
 	{
-		// TODO
+		$this->markTestIncomplete("TODO!");
 	}
 
 	public function testCombineMultipleTimezones()
@@ -184,6 +313,8 @@ class RSetTest extends PHPUnit_Framework_TestCase
 			'BYDAY' => 'TU, TH',
 			'DTSTART' => date_create('1997-09-02 09:00')
 		));
+		$this->assertEquals(6, count($rset));
+
 		$rset->addExdate('1997-09-04 09:00:00');
 		$rset->addExdate('1997-09-11 09:00:00');
 		$rset->addExdate('1997-09-18 09:00:00');
@@ -342,7 +473,7 @@ class RSetTest extends PHPUnit_Framework_TestCase
 			'DTSTART' => date_create('1997-09-02 09:00')
 		));
 
-		foreach ( $rset as $occurrence ) {
+		foreach ($rset as $occurrence) {
 			$this->assertEquals(date_create('1997-09-02 09:00'), $occurrence);
 			break;
 		}
@@ -445,32 +576,136 @@ class RSetTest extends PHPUnit_Framework_TestCase
 			date_create('2017-01-01'),date_create('2017-01-02'),date_create('2017-01-03'),
 			date_create('2017-01-04'),date_create('2017-01-05')
 		), $rset->getOccurrences(5));
-		try {
-			$rset->getOccurrences();
-			$this->fail('Expected exception (infinite rule) not thrown');
-		} catch ( \LogicException $e ) {
-
-		}
 	}
 
-	public function testGetOccurrencesBetween()
+	/**
+	 * @expectedException LogicException
+	 * @expectedExceptionMessage Cannot get all occurrences of an infinite recurrence set.
+	 */
+	public function testGetOccurrencesThrowsLogicException()
 	{
 		$rset = new RSet();
 		$rset->addRRule(new RRule(array(
 			'FREQ' => 'DAILY',
 			'DTSTART' => '2017-01-01'
 		)));
+		$rset->getOccurrences();
+	}
+	public function occurrencesBetween()
+	{
+		return [
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-01', null, 1, [date_create('2017-01-01')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-02-01', '2017-12-31', 1, [date_create('2017-02-01')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-01', null, 5, [
+				date_create('2017-01-01'),
+				date_create('2017-01-02'),
+				date_create('2017-01-03'),
+				date_create('2017-01-04'),
+				date_create('2017-01-05'),
+			]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-01', '2017-01-05', null, [
+				date_create('2017-01-01'),
+				date_create('2017-01-02'),
+				date_create('2017-01-03'),
+				date_create('2017-01-04'),
+				date_create('2017-01-05'),
+			]],
+		];
+	}
 
-		$this->assertCount(1, $rset->getOccurrencesBetween('2017-01-01', null, 1));
-		$this->assertCount(1, $rset->getOccurrencesBetween('2017-02-01', '2017-12-31', 1));
-		$this->assertEquals(array(date_create('2017-02-01')), $rset->getOccurrencesBetween('2017-02-01', '2017-12-31', 1));
-		$this->assertCount(5, $rset->getOccurrencesBetween('2017-01-01', null, 5));
-		try {
-			$rset->getOccurrencesBetween('2017-01-01', null);
-			$this->fail('Expected exception (infinite rule) not thrown');
-		} catch ( \LogicException $e ) {
+	/**
+	 * @dataProvider occurrencesBetween
+	 */
+	public function testGetOccurrencesBetween(RSet $rset, $begin, $end, $limit, $expected)
+	{
+		$this->assertEquals($expected, $rset->getOccurrencesBetween($begin, $end, $limit));
+	}
 
-		}
+	/**
+	 * @expectedException LogicException
+	 * @expectedExceptionMessage Cannot get all occurrences of an infinite recurrence rule.
+	 */
+	public function testGetOccurrencesBetweenThrowsLogicException()
+	{
+		$rset = new RSet();
+		$rset->addRRule(new RRule(array(
+			'FREQ' => 'DAILY',
+			'DTSTART' => '2017-01-01'
+		)));
+		$rset->getOccurrencesBetween('2017-01-01', null);
+	}
+
+	public function occurrencesAfter()
+	{
+		return [
+			[
+				(new RSet())
+					->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2")
+					->addRRule("DTSTART:20170102\nRRULE:FREQ=DAILY;INTERVAL=2")
+				, '2017-02-01', false, 2, [date_create('2017-02-02'),date_create('2017-02-03')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-02-01', true, 2, [date_create('2017-02-01'),date_create('2017-02-02')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-02', true, 2, [date_create('2017-01-03'),date_create('2017-01-05')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-02', false, 2, [date_create('2017-01-03'),date_create('2017-01-05')]],
+		];
+	}
+
+	/**
+	 * @dataProvider occurrencesAfter
+	 */
+	public function testGetOccurrencesAfter(RSet $rset, $date, $inclusive, $limit, $expected)
+	{
+		$occurrences = $rset->getOccurrencesAfter($date, $inclusive, $limit);
+		$this->assertEquals($expected, $occurrences);
+	}
+
+	public function occurrencesBefore()
+	{
+		return [
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-02-01', true, 2, [date_create('2017-01-31'),date_create('2017-02-01')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-02-01', false, 2, [date_create('2017-01-30'),date_create('2017-01-31')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-02', false, null, [date_create('2017-01-01')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-02', false, 5, [date_create('2017-01-01')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-04', true, 2, [date_create('2017-01-01'),date_create('2017-01-03')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-04', false, 2, [date_create('2017-01-01'),date_create('2017-01-03')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-02', false, null, [date_create('2017-01-01')]],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-02', false, 5, [date_create('2017-01-01')]],
+		];
+	}
+	/**
+	 * @dataProvider occurrencesBefore
+	 */
+	public function testGetOccurrencesBefore(RSet $rset, $date, $inclusive, $limit, $expected)
+	{
+		$occurrences = $rset->getOccurrencesBefore($date, $inclusive, $limit);
+		$this->assertEquals($expected, $occurrences);
+	}
+
+	public function nthOccurrences()
+	{
+		return [
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-01', 0, date_create('2017-01-01')],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-01', 1, date_create('2017-01-02')],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-01', 2, date_create('2017-01-05')],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-02', 0, null],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-01', -1, null],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-10', -1, date_create('2017-01-09')],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY"), '2017-01-10', -2, date_create('2017-01-08')],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-11', -2, date_create('2017-01-07')],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2"), '2017-01-10', -2, date_create('2017-01-07')],
+
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;COUNT=2"), '2017-01-01', 3, null],
+			[(new RSet())->addRRule("DTSTART:20170101\nRRULE:FREQ=DAILY;UNTIL=20170102"), '2017-01-01', 3, null],
+
+		];
+	}
+
+	/**
+	 * @dataProvider nthOccurrences
+	 */
+	public function testGetNthOccurrenceFrom(RSet $rset, $date, $index, $result)
+	{
+		$occurrence = $rset->getNthOccurrenceFrom($date, $index);
+		$this->assertEquals($result, $occurrence);
 	}
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -498,7 +733,16 @@ class RSetTest extends PHPUnit_Framework_TestCase
 					date_create('1997-09-02 09:00:00', new \DateTimeZone('America/New_York')),
 					date_create('1997-09-04 09:00:00', new \DateTimeZone('America/New_York'))
 				)
-			)
+			),
+			array(
+				"EXDATE;VALUE=DATE-TIME:20171227T200000Z
+				RRULE:FREQ=MONTHLY;WKST=MO;BYDAY=-1WE;UNTIL=20180131T200000Z
+				DTSTART:20171129T200000Z",
+				array(
+					date_create('2017-11-29 20:00:00', new \DateTimeZone('GMT')),
+					date_create('2018-01-31 20:00:00', new \DateTimeZone('GMT'))
+				)
+			),
 		);
 	}
 
@@ -539,17 +783,20 @@ class RSetTest extends PHPUnit_Framework_TestCase
 			date_create('2017-01-02'),
 			date_create('2017-01-03')
 		), $rset->getOccurrences());
-
-		try {
-			$rset = new RSet(
-				"DTSTART:DTSTART;TZID=America/New_York:19970901T090000\nRRULE:FREQ=DAILY;COUNT=3\nEXRULE:FREQ=DAILY;INTERVAL=2;COUNT=1",
-				date_create('2017-01-01')
-			);
-			$this->fail('Expected InvalidArgumentException (too many start date) not thrown');
-		} catch ( InvalidArgumentException $e ) {
-
-		}
 	}
+
+	/**
+	 * @expectedException InvalidArgumentException
+	 * @expectedExcpetionMessage Failed to parse RFC string, multiple DTSTART found
+	 */
+	public function testParseRfcStringWithMultipleDtStart()
+	{
+		$rset = new RSet(
+			"DTSTART:DTSTART;TZID=America/New_York:19970901T090000\nRRULE:FREQ=DAILY;COUNT=3\nEXRULE:FREQ=DAILY;INTERVAL=2;COUNT=1",
+			date_create('2017-01-01')
+		);
+	}
+
 	public function quirkyRfcStrings()
 	{
 		return array(
@@ -569,7 +816,7 @@ class RSetTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @dataProvider quirkyRfcStrings
-	 * @expectedException PHPUnit_Framework_Error_Notice
+	 * @expectedException PHPUnit\Framework\Error\Notice
 	 */
 	public function testParseQuirkyRfcStringNotice($string, $occurrences)
 	{

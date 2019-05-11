@@ -1,12 +1,15 @@
 <?php
 
+namespace RRule\Tests;
+
 use RRule\RRule;
+use DateTime;
+use DateTimeZone;
+use ReflectionClass;
+use stdClass;
+use PHPUnit\Framework\TestCase;
 
-// make sure that the tests are run in the same timezone everywhere
-// Europe/Helsinki has DST
-date_default_timezone_set('Europe/Helsinki');
-
-class RRuleTest extends PHPUnit_Framework_TestCase
+class RRuleTest extends TestCase
 {
 	/**
 	 * These rules are invalid according to the RFC
@@ -107,7 +110,8 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testValidRules($rule)
 	{
-		new RRule($rule);
+		$result = new RRule($rule);
+		$this->assertInstanceOf('RRule\RRule', $result);
 	}
 
 	/**
@@ -217,15 +221,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		), $rule));
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').'in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').'in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -317,15 +321,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		), $rule));
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -392,15 +396,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		), $rule));
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -468,15 +472,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		), $rule));
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -593,15 +597,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		), $rule));
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -718,15 +722,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		), $rule));
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -843,15 +847,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		), $rule));
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -1448,15 +1452,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		$rule = new RRule($rule);
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -1665,15 +1669,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		$rule = new RRule($rule);
 		$this->assertEquals($occurrences, $rule->getOccurrences());
 		$this->assertEquals($occurrences, $rule->getOccurrences(), 'Cached version');
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in cached version');
 		}
 		$rule->clearCache();
-		foreach ( $occurrences as $date ) {
+		foreach ($occurrences as $date) {
 			$this->assertTrue($rule->occursAt($date), $date->format('r').' in uncached version');
 		}
 		$rule->clearCache();
-		for ( $i = 0; $i < count($occurrences); $i++ ) {
+		for ($i = 0; $i < count($occurrences); $i++) {
 			$this->assertEquals($rule[$i], $occurrences[$i], 'array access uncached');
 		}
 	}
@@ -1736,7 +1740,7 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 	public function testNotOccurrences($rule, $not_occurences)
 	{
 		$rule = new RRule($rule);
-		foreach ( $not_occurences as $date ) {
+		foreach ($not_occurences as $date) {
 			$this->assertFalse($rule->occursAt($date), "Rule must not match $date");
 		}
 	}
@@ -1758,32 +1762,158 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 			date_create('2017-01-01'),date_create('2017-01-02'),date_create('2017-01-03'),
 			date_create('2017-01-04'),date_create('2017-01-05')
 		), $rrule->getOccurrences(5));
-		try {
-			$rrule->getOccurrences();
-			$this->fail('Expected exception (infinite rule) not thrown');
-		} catch ( \LogicException $e ) {
-
-		}
 	}
 
-	public function testGetOccurrencesBetween()
+	/**
+	 * @expectedException LogicException
+	 * @expectedExceptionMessage Cannot get all occurrences of an infinite recurrence rule.
+	 */
+	public function testGetOccurrencesThrowsLogicException()
 	{
 		$rrule = new RRule(array(
 			'FREQ' => 'DAILY',
 			'DTSTART' => '2017-01-01'
 		));
-
-		$this->assertCount(1, $rrule->getOccurrencesBetween('2017-01-01', null, 1));
-		$this->assertCount(1, $rrule->getOccurrencesBetween('2017-02-01', '2017-12-31', 1));
-		$this->assertEquals(array(date_create('2017-02-01')), $rrule->getOccurrencesBetween('2017-02-01', '2017-12-31', 1));
-		$this->assertCount(5, $rrule->getOccurrencesBetween('2017-01-01', null, 5));
-		try {
-			$rrule->getOccurrencesBetween('2017-01-01', null);
-			$this->fail('Expected exception (infinite rule) not thrown');
-		} catch ( \LogicException $e ) {
-
-		}
+		$rrule->getOccurrences();
 	}
+
+	public function testGetOccurrencesNegativeLimit()
+	{
+		$this->expectException(\InvalidArgumentException::class);
+		$rrule = new RRule(array(
+			'FREQ' => 'DAILY',
+			'DTSTART' => '2017-01-01'
+		));
+		$rrule->getOccurrences(-1);
+	}
+
+	public function occurrencesBetween()
+	{
+		return [
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-01', null, 1, [date_create('2017-01-01')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-02-01', '2017-12-31', 1, [date_create('2017-02-01')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-01', null, 5, [
+				date_create('2017-01-01'),
+				date_create('2017-01-02'),
+				date_create('2017-01-03'),
+				date_create('2017-01-04'),
+				date_create('2017-01-05'),
+			]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-01', '2017-01-05', null, [
+				date_create('2017-01-01'),
+				date_create('2017-01-02'),
+				date_create('2017-01-03'),
+				date_create('2017-01-04'),
+				date_create('2017-01-05'),
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider occurrencesBetween
+	 */
+	public function testGetOccurrencesBetween($rule, $begin, $end, $limit, $expected)
+	{
+		$rrule = new RRule($rule);
+
+		$this->assertEquals($expected, $rrule->getOccurrencesBetween($begin, $end, $limit));
+	}
+
+	/**
+	 * @expectedException LogicException
+	 * @expectedExceptionMessage Cannot get all occurrences of an infinite recurrence rule.
+	 */
+	public function testGetOccurrencesBetweenThrowsLogicException()
+	{
+		$rrule = new RRule(array(
+			'FREQ' => 'DAILY',
+			'DTSTART' => '2017-01-01'
+		));
+		$rrule->getOccurrencesBetween('2017-01-01', null);
+	}
+
+	public function testGetOccurrencesBetweenNegativeLimit()
+	{
+		$this->expectException(\InvalidArgumentException::class);
+		$rrule = new RRule(array(
+			'FREQ' => 'DAILY',
+			'DTSTART' => '2017-01-01'
+		));
+		$rrule->getOccurrencesBetween('2017-01-01', '2018-01-01', -1);
+	}
+
+	public function occurrencesAfter()
+	{
+		return [
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-02-01', false, 2, [date_create('2017-02-02'),date_create('2017-02-03')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-02-01', true, 2, [date_create('2017-02-01'),date_create('2017-02-02')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-02', true, 2, [date_create('2017-01-03'),date_create('2017-01-05')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-02', false, 2, [date_create('2017-01-03'),date_create('2017-01-05')]],
+		];
+	}
+
+	/**
+	 * @dataProvider occurrencesAfter
+	 */
+	public function testGetOccurrencesAfter($rrule, $date, $inclusive, $limit, $expected)
+	{
+		$rrule = new RRule($rrule);
+		$occurrences = $rrule->getOccurrencesAfter($date, $inclusive, $limit);
+		$this->assertEquals($expected, $occurrences);
+	}
+
+	public function occurrencesBefore()
+	{
+		return [
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-02-01', true, 2, [date_create('2017-01-31'),date_create('2017-02-01')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-02-01', false, 2, [date_create('2017-01-30'),date_create('2017-01-31')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-02', false, null, [date_create('2017-01-01')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-02', false, 5, [date_create('2017-01-01')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-04', true, 2, [date_create('2017-01-01'),date_create('2017-01-03')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-04', false, 2, [date_create('2017-01-01'),date_create('2017-01-03')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-02', false, null, [date_create('2017-01-01')]],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-02', false, 5, [date_create('2017-01-01')]],
+		];
+	}
+	/**
+	 * @dataProvider occurrencesBefore
+	 */
+	public function testGetOccurrencesBefore($rrule, $date, $inclusive, $limit, $expected)
+	{
+		$rrule = new RRule($rrule);
+		$occurrences = $rrule->getOccurrencesBefore($date, $inclusive, $limit);
+		$this->assertEquals($expected, $occurrences);
+	}
+
+	public function nthOccurrences()
+	{
+		return [
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-01', 0, date_create('2017-01-01')],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-01', 1, date_create('2017-01-02')],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-01', 2, date_create('2017-01-05')],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-02', 0, null],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-01', -1, null],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-10', -1, date_create('2017-01-09')],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY", '2017-01-10', -2, date_create('2017-01-08')],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-11', -2, date_create('2017-01-07')],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;INTERVAL=2", '2017-01-10', -2, date_create('2017-01-07')],
+
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;COUNT=2", '2017-01-01', 3, null],
+			["DTSTART:20170101\nRRULE:FREQ=DAILY;UNTIL=20170102", '2017-01-01', 3, null],
+
+		];
+	}
+
+	/**
+	 * @dataProvider nthOccurrences
+	 */
+	public function testGetNthOccurrenceFrom($rrule, $date, $index, $result)
+	{
+		$rrule = new RRule($rrule);
+		$occurrence = $rrule->getNthOccurrenceFrom($date, $index);
+		$this->assertEquals($result, $occurrence);
+	}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // RFC Strings
@@ -1928,7 +2058,7 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 		// as generating the string from a rule
 		$this->assertEquals($rule, new RRule($rule->rfcString()));
 
-		if ( $occurrences ) {
+		if ($occurrences) {
 			$this->assertEquals($occurrences, $rule->getOccurrences());
 		}
 	}
@@ -1943,13 +2073,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 
 		$rrule = new RRule('RRULE:FREQ=YEARLY', '2017-01-01');
 		$this->assertEquals('2017-01-01', $rrule[0]->format('Y-m-d'));
+	}
 
-		try {
-			$rrule = new RRule("DTSTART:19970512\nRRULE:FREQ=YEARLY", date_create('2017-01-01'));
-			$this->fail('Expected InvalidArgumentException (too many dtstart) not thrown');
-		} catch ( \InvalidArgumentException $e ) {
-
-		}
+	/**
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionMessage Too many DTSTART properties (there can be only one)
+	 */
+	public function testRfcStringParserWithMultipleDtStart()
+	{
+		$rrule = new RRule("DTSTART:19970512\nRRULE:FREQ=YEARLY", date_create('2017-01-01'));
 	}
 
 	/**
@@ -1979,7 +2111,7 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @dataProvider quirkyRfcStrings
-	 * @expectedException PHPUnit_Framework_Error_Notice
+	 * @expectedException PHPUnit\Framework\Error\Notice
 	 */
 	public function testQuirkyRfcStringsParserNotice($str,$occurrences)
 	{
@@ -1993,7 +2125,7 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 	{
 		$rule = @ new RRule($str);
 
-		if ( $occurrences ) {
+		if ($occurrences) {
 			$this->assertEquals($occurrences, $rule->getOccurrences(), '', 1);
 		}
 	}
@@ -2076,6 +2208,7 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 
 		$str = $rrule->rfcString();
 		$new_rrule = new RRule($str);
+		$this->assertInstanceOf('RRule\RRule', $new_rrule);
 	}
 
 	public function testUnsupportedTimezoneConvertedToUtc()
@@ -2168,6 +2301,15 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 					'DTSTART' => date_create('2015-07-01 09:00:00', new DateTimeZone('Australia/Sydney'))
 				),
 				"DTSTART;TZID=Australia/Sydney:20150701T090000\nRRULE:FREQ=SECONDLY"
+			),
+			array(
+				array(
+					'FREQ' => RRule::SECONDLY,
+					'BYMINUTE' => 0,
+					'BYHOUR' => 0,
+					'DTSTART' => date_create('2015-07-01 09:00:00', new DateTimeZone('Australia/Sydney'))
+				),
+				"DTSTART;TZID=Australia/Sydney:20150701T090000\nRRULE:FREQ=SECONDLY;BYMINUTE=0;BYHOUR=0"
 			),
 		);
 	}
@@ -2428,14 +2570,14 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 
 		// iterate
 		$rrule->clearCache();
-		foreach ( $rrule as $occurrence ) {
+		foreach ($rrule as $occurrence) {
 			break;
 		}
 		$this->assertEquals(date_create('2007-01-01'), $occurrence);
 		$occurrence->modify('+1 day');
 		$this->assertEquals(date_create('2007-01-01'), $rrule[0], 'No modification possible with foreach (uncached)');
 
-		foreach ( $rrule as $occurrence ) {
+		foreach ($rrule as $occurrence) {
 			break;
 		}
 		$this->assertEquals(date_create('2007-01-01'), $occurrence);
@@ -2599,15 +2741,19 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testI18nFilesToLoadWithIntl($locale, $files)
 	{
-		if ( ! $files ) {
+		$reflector = new ReflectionClass('RRule\RRule');
+		$method = $reflector->getMethod('i18nFilesToLoad');
+		$method->setAccessible(true);
+
+		if (! $files) {
 			try {
-				$files = RRule::i18nFilesToLoad($locale, true);
+				$method->invokeArgs(null, array($locale, true));
 				$this->fail('Expected InvalidArgumentException not thrown (files was '.json_encode($files).')');
 			} catch (\InvalidArgumentException $e) {
 			}
 		}
 		else {
-			$this->assertEquals($files, RRule::i18nFilesToLoad($locale, true));
+			$this->assertEquals($files,$method->invokeArgs(null, array($locale, true)));
 		}
 	}
 
@@ -2616,15 +2762,20 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testI18nFilesToLoadWithoutIntl($locale, $dummy, $files)
 	{
-		if ( ! $files ) {
+		$reflector = new ReflectionClass('RRule\RRule');
+		$method = $reflector->getMethod('i18nFilesToLoad');
+		$method->setAccessible(true);
+
+		if (! $files) {
 			try {
-				RRule::i18nFilesToLoad($locale, false);
+				$method->invokeArgs(null, array($locale, false));
 				$this->fail('Expected InvalidArgumentException not thrown (files was '.json_encode($files).')');
 			} catch (\InvalidArgumentException $e) {
+				$this->assertStringStartsWith("The locale option does not look like a valid locale:", $e->getMessage());
 			}
 		}
 		else {
-			$this->assertEquals($files, RRule::i18nFilesToLoad($locale, false));
+			$this->assertEquals($files, $method->invokeArgs(null, array($locale, false)));
 		}
 	}
 
@@ -2725,8 +2876,6 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 			'dtstart' => '2007-01-01'
 		));
 
-		$reflector = new ReflectionClass('RRule\RRule');
-
 		setlocale(LC_MESSAGES, 'C');
 		$this->assertNotEmpty($rrule->humanReadable(array('fallback' => null)), 'C locale is converted to "en"');
 	}
@@ -2738,6 +2887,12 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 				"DTSTART:20170202T000000Z\nRRULE:FREQ=DAILY;UNTIL=20170205T000000Z",
 				array('locale' => "en"),
 				"daily, starting from 2/2/17, until 2/5/17"
+			),
+			array(
+				"RRULE:FREQ=DAILY;UNTIL=20190405T055959Z",
+				array('locale' => "en"),
+				"daily, starting from 1/10/19, until 4/5/19",
+				'2019-01-10T12:00:00-05:00'
 			),
 			array(
 				"DTSTART:20170202T000000Z\nRRULE:FREQ=DAILY;UNTIL=20170205T000000Z",
@@ -2769,15 +2924,34 @@ class RRuleTest extends PHPUnit_Framework_TestCase
 				array('locale' => "en_IE", 'include_start' => false, 'explicit_infinite' => false),
 				"daily"
 			),
+			// with custom_path
+			'custom_path' => array(
+				"DTSTART:20170202T000000Z\nRRULE:FREQ=YEARLY;UNTIL=20170205T000000Z",
+				array('locale' => "fr_BE", "custom_path" => __DIR__."/i18n"),
+				"chaque année, à partir du 2/02/17, jusqu'au 5/02/17"
+			),
+			'custom_path cached separately' => array(
+				"DTSTART:20170202T000000Z\nRRULE:FREQ=YEARLY;UNTIL=20170205T000000Z",
+				array('locale' => "fr_BE"),
+				"tous les ans, à partir du 2/02/17, jusqu'au 5/02/17",
+			),
+			array(
+				"RRULE:FREQ=DAILY;UNTIL=20190405T055959Z",
+				array('locale' => "xx", "custom_path" => __DIR__."/i18n", "date_formatter" => function($date) { return "X"; }),
+				"daily, starting from X, until X"
+			),
 		);
 	}
 
 	/**
 	 * @dataProvider humanReadableStrings
 	 */
-	public function testHumanReadable($rrule,$options,  $string)
+	public function testHumanReadable($rrule, $options, $string, $dtstart = null)
 	{
-		$rrule = new RRule($rrule);
+		if ($dtstart) {
+			$dtstart = new DateTime($dtstart);
+		}
+		$rrule = new RRule($rrule, $dtstart);
 		$this->assertEquals($string, $rrule->humanReadable($options));
 	}
 }

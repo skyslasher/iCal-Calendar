@@ -2,8 +2,57 @@
 
 ## [Unreleased]
 
-## [1.5.1] - 2017-05-15
+### Added
 
+- Added new methods to `RSet`: `removeDate`, `clearDates`, `removeExDate` and `clearExDates` [#66](https://github.com/rlanvin/php-rrule/pull/66)
+
+## [2.0.0] - 2019-03-16
+
+- Add support for PHP 7.3
+
+## [2.0.0-rc1] - 2019-01-13
+
+- Rewrite the core algorithm to use a native PHP generator, drop compability with PHP < 5.6 [#43](https://github.com/rlanvin/php-rrule/issues/43)
+
+### Added
+
+- New option `custom_path` to `humanReadable()` to use custom translation files [#56](https://github.com/rlanvin/php-rrule/issues/56)
+- New helpers methods [#60](https://github.com/rlanvin/php-rrule/issues/60)
+  - `getOccurrencesBefore`
+  - `getOccurrencesAfter`
+  - `getNthOccurrencesBefore`
+  - `getNthOccurrencesAfter`
+  - `getNthOccurrencesFrom`
+
+## [1.6.3] - 2019-01-13
+
+### Fixed
+
+- Fix error when timezone is an offset instead of an olson name. [#61](https://github.com/rlanvin/php-rrule/issues/61)
+- Fix VALUE is a valid param of EXDATE [#62](https://github.com/rlanvin/php-rrule/issues/62)
+
+## [1.6.2] - 2018-09-18
+
+### Fixed
+
+- Fix typo in NL translation [#53](https://github.com/rlanvin/php-rrule/issues/53)
+
+## [1.6.1] - 2018-04-13
+
+### Fixed
+
+- Null check to prevent 0 (false) values being lost when exporting to RFC string [#50](https://github.com/rlanvin/php-rrule/pull/50)
+- Fix warning in `humanReadable()` [#44](https://github.com/rlanvin/php-rrule/pull/44)
+- Fix typo in NL translation [#46](https://github.com/rlanvin/php-rrule/pull/46)
+
+## [1.6.0] - 2017-10-11
+
+### Added
+
+- German translation [#38](https://github.com/rlanvin/php-rrule/pull/38)
+- Add `include_until` option to `humanReadable` to omit the "until" part of the rule [#36](https://github.com/rlanvin/php-rrule/pull/36)
+
+## [1.5.1] - 2017-05-15
 ### Fixed
 
 - Throw exception when passing a float instead of an int (e.g. INTERVAL=1.5) instead of casting silently
@@ -122,7 +171,13 @@
 
 - First release, everything before that was unversioned (`dev-master` was used).
 
-[Unreleased]: https://github.com/rlanvin/php-rrule/compare/v1.5.1...HEAD
+[Unreleased]: https://github.com/rlanvin/php-rrule/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/rlanvin/php-rrule/compare/v2.0.0-rc1...v2.0.0
+[2.0.0-rc1]: https://github.com/rlanvin/php-rrule/compare/v1.6.3...v2.0.0-rc1
+[1.6.3]: https://github.com/rlanvin/php-rrule/compare/v1.6.2...v1.6.3
+[1.6.2]: https://github.com/rlanvin/php-rrule/compare/v1.6.1...v1.6.2
+[1.6.1]: https://github.com/rlanvin/php-rrule/compare/v1.6.0...v1.6.1
+[1.6.0]: https://github.com/rlanvin/php-rrule/compare/v1.5.1...v1.6.0
 [1.5.1]: https://github.com/rlanvin/php-rrule/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/rlanvin/php-rrule/compare/v1.4.2...v1.5.0
 [1.4.2]: https://github.com/rlanvin/php-rrule/compare/v1.4.1...v1.4.2

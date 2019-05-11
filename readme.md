@@ -28,7 +28,7 @@ Kalender werden beim Laden unter Berücksichtigung ihrer jeweiligen Zeitzone in 
 
 Diese Bibliothek nutzt folgende externe Bibliotheken im Verzeichnis `/lib`:
 * iCalcreator (Version 2.26) `https://github.com/iCalcreator/iCalcreator`, AGPLv3-Lizenz
-* RRULE for PHP (Stand 2017-05-15) `https://github.com/rlanvin/php-rrule`, MIT-Lizenz
+* RRule for PHP (Stand 2019-05-11) `https://github.com/rlanvin/php-rrule`, MIT-Lizenz
 
 
 ### 2. Voraussetzungen

@@ -32,7 +32,7 @@ Complete documentation and more examples are available in [the wiki](https://git
 
 ## Requirements
 
-- PHP >= 5.3
+- PHP >= 5.6
 - [intl extension](http://php.net/manual/en/book.intl.php) is recommended for `humanReadable()` but not strictly required
 
 ## Installation
@@ -41,26 +41,11 @@ The recommended way is to install the lib [through Composer](http://getcomposer.
 
 Simply run `composer require rlanvin/php-rrule` for it to be automatically installed and included in your `composer.json`.
 
-Alternatively, just add this to your `composer.json` file and then run `composer install` (you can replace `1.*` by any version selector, or even `dev-master` for the latest development version).
-
-```JSON
-{
-    "require": {
-        "rlanvin/php-rrule": "1.*"
-    }
-}
-```
-
 Now you can use the autoloader, and you will have access to the library:
 
 ```php
 require 'vendor/autoload.php';
 ```
-
-### Alternative method (not recommended)
-
-- Download [the latest release](https://github.com/rlanvin/php-rrule/releases/latest)
-- Put the files in a folder that is autoloaded, or `include` or `require` them
 
 ## Documentation
 
@@ -71,6 +56,8 @@ You will also find useful information in the [RFC 5545 section 3.3.10](https://t
 ## Contribution
 
 Feel free to contribute! Just create a new issue or a new pull request.
+
+The coding style is (mostly) PSR-2, but with tabs.
 
 ## Note
 

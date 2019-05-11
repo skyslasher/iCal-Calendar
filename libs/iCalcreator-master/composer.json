@@ -17,13 +17,11 @@
                   "standard",
                   "daylight",
                   "file" ],
-    "time" : "2017-09-04",
-    "license": "(AGPLv3 or proprietary)",
-    "description": "iCalcreator is the PHP implementation of rfc2445/rfc5545, management of iCal formatted files",
-    "keywords": [ "rfc2445", "rfc5545", "calendar", "management", "file", "format" ],
+    "time" : "2019-03-14",
+    "license": ["LGPL-3.0-or-later"],
     "homepage": "http://kigkonsult.se",
     "support": {
-       "issues": "http://kigkonsult.se/contact/index.php"
+       "issues": "https://github.com/iCalcreator/iCalcreator/issues"
     },
     "authors": [
         {
@@ -33,9 +31,10 @@
     ],
     "autoload": {
         "files": ["autoload.php"],
-        "psr-4": { "kigkonsult\\iCalcreator\\": ["src/", "src/util/", "src/traits/"] }
+        "psr-4": { "Kigkonsult\\Icalcreator\\": ["src/", "src/Util/", "src/Traits/"] }
     },
     "require": {
-        "php": ">=5.4"
+        "php": ">=5.6",
+        "ext-simplexml": "*"
     }
 }

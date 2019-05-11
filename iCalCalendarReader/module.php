@@ -213,7 +213,7 @@ class ICCR_iCalImporter
             "TZID" => $this->Timezone,
             "X-WR-TIMEZONE" => $this->Timezone
         );
-		$vCalendar = new kigkonsult\iCalcreator\vcalendar( $Config );
+		$vCalendar = new Kigkonsult\Icalcreator\vcalendar( $Config );
 		$vCalendar->parse( $iCalData );
 
 		// get calendar supplied timezones

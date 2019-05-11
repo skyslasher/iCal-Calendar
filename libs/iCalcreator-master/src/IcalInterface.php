@@ -28,50 +28,26 @@
  * This file is a part of iCalcreator.
 */
 
-namespace Kigkonsult\Icalcreator\Traits;
-
-use Kigkonsult\Icalcreator\Util\Util;
+namespace Kigkonsult\Icalcreator;
 
 /**
- * VERSION property functions
+ * interface IcalInterface
  *
- * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since  2.22.23 - 2017-02-18
+ * @author      Kjell-Inge Gustafsson <ical@kigkonsult.se>
+ * @see https://en.wikipedia.org/wiki/Basic_access_authentication
+ * @see https://tools.ietf.org/html/rfc7617
  */
-trait VERSIONtrait
+interface IcalInterface
 {
     /**
-     * Property Name: VERSION
-     *
-     * Description: A value of "2.0" corresponds to this memo.
-     *
-     * @var string calendar property VERSION
-     * @access protected
+     * Class constants
      */
-    protected $version = '2.0';
-
-    /**
-     * Return formatted output for calendar property version
-     *
-     * If version is missing, version is set
-     *
-     * @return string
-     */
-    public function createVersion() {
-        return sprintf( self::$FMTICAL, Util::$VERSION, $this->version );
-    }
-
-    /**
-     * Set (another?) calendar version
-     *
-     * @param string $value
-     * @return bool
-     */
-    public function setVersion( $value ) {
-        if( empty( $value )) {
-            return false;
-        }
-        $this->version = $value;
-        return true;
-    }
+    const VTIMEZONE = 'Vtimezone';
+    const STANDARD  = 'Standard';
+    const DAYLIGHT  = 'Daylight';
+    const VEVENT    = 'Vevent';
+    const VTODO     = 'Vtodo';
+    const VJOURNAL  = 'Vjournal';
+    const VFREEBUSY = 'Vfreebusy';
+    const VALARM    = 'Valarm';
 }

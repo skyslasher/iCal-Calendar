@@ -54,7 +54,7 @@ Name                | Beschreibung
 Calendar URL        | URL zum iCal-Feed
 Username            | Benutzer für den Zugriff auf den Feed
 Passwort            | Passwort dieses Benutzers
-Synchronization     | 
+*Synchronization*   | 
 Cachesize (days)    | Anzahl der Tage für die Ereignisse in der Zukunft gelesen werden sollen
 Update-freq. (mins) | Nach wie vielen Minuten soll ein Update des Feeds gelesen werden
 
@@ -84,11 +84,11 @@ Die **iCal Calendar Notifier** haben folgende Konfigurationsoptionen:
 
 __Konfigurationsseite__:
 
-Name                | Beschreibung
-------------------- | ---------------------------------
-Lagged Notification | 
-Prenotify (mins)    | Wie viele Minuten vor dem Ereignisstart soll die Statusvariable "Presence" auf "true" gesetzt werden
-Delay (mins)        | Wie viele Minuten nach dem Ereignisende soll die Statusvariable "Presence" auf "false" gesetzt werden
+Name                  | Beschreibung
+--------------------- | ---------------------------------
+*Lagged Notification* | 
+Prenotify (mins)      | Wie viele Minuten vor dem Ereignisstart soll die Statusvariable "Presence" auf "true" gesetzt werden
+Delay (mins)          | Wie viele Minuten nach dem Ereignisende soll die Statusvariable "Presence" auf "false" gesetzt werden
 
 **Wichtig!** Im unteren Teil der Konfigurationsseite als übergeordnete Instanz die zugehörige **iCal Calendar Reader**-Instanz auswählen.
 

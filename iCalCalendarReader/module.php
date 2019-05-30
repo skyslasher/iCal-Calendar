@@ -243,6 +243,7 @@ class ICCR_iCalImporter
 			$ThisEvent[ "Name" ] = $Comp->getProperty( "summary", false, false );
 			$ThisEvent[ "Location" ] = $Comp->getProperty( "location", false, false );
 			$ThisEvent[ "Description" ] = $Comp->getProperty( "description", false, false );
+			$ThisEvent[ "Categories" ] = $Comp->getProperty( "categories", false, false );
 
 			$StartingTime = $this->iCalDateTimeArrayToDateTime( $Comp->getProperty( "dtstart", false, true ) );
 			$EndingTime = $this->iCalDateTimeArrayToDateTime( $Comp->getProperty( "dtend", false, true ) );
